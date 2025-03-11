@@ -1,5 +1,5 @@
 import random
-from hangman import hangman
+from hangman import hangman, art
 
 
 # Load words from file
@@ -11,6 +11,7 @@ word = random.choice(word_list).lower()
 
 
 #On startup
+print(art)
 print("Welcome to Hangman!")
 print("Try to guess the word in less than 6 attempts.")
 print("Good luck!")
@@ -25,26 +26,40 @@ for _ in range(word_length):
 #Game loop
 game_over = False
 attempts = 6
+guessed_letters = set()
+
+#print(word) #For debugging purposes
 while not game_over:
     print("")
     print(f"{' '.join(display)}")
     guess = input("Guess a letter: ").lower()
 
-    if guess in display:
-        print(f"You've already guessed {guess}")
+    # Error Handling: Check if input is a single letter
+    if not guess.isalpha():
+        print("Invalid input! Please enter a letter (A-Z).")
+        continue
+    
+    if guess in guessed_letters:
+        print(f"You've already guessed '{guess}'. Try another letter.")
+        continue
 
+    guessed_letters.add(guess)
+
+
+    #guessing word
     if len(guess) != 1:
         if guess == word:
             game_over = True
             print("You win!")
+            print("Good guess!")
+            break
         elif len(guess) == len(word):
             print("That's not the word.")
-            attempts -= 1
-            print(hangman[6 - attempts])
+           
         else:
-             print("You can only guess one letter at a time.")
-             continue
-
+            print("Your guess must be either one letter or the full word.")
+            
+    #guessing letter
     for position in range(word_length):
         letter = word[position]
         if letter == guess:
@@ -57,7 +72,7 @@ while not game_over:
     if "_" not in display:
         game_over = True
         print("You win!")
-        print(f"The word is {word}")
+        print(f"{' '.join(display)}")
     elif attempts == 0:
         game_over = True
         print("You lose!")
