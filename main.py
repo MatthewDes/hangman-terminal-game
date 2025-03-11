@@ -47,17 +47,17 @@ while not game_over:
 
 
     #guessing word
-    if len(guess) != 1:
+    if len(guess) == word_length:
         if guess == word:
-            game_over = True
-            print("You win!")
-            print("Good guess!")
+        
+            print(f"Congratulations! You guessed the word: {word}")
             break
-        elif len(guess) == len(word):
-            print("That's not the word.")
-           
         else:
-            print("Your guess must be either one letter or the full word.")
+            print("That's not the word.")
+
+    elif len(guess) > 1:
+        print("Your guess must be either one letter or the full word.")
+
             
     #guessing letter
     for position in range(word_length):
@@ -78,6 +78,7 @@ while not game_over:
         print("You lose!")
         print(f"The word was {word}")
     else:
+        print("")
         print(f"You have {attempts} attempts left.")
 
 
